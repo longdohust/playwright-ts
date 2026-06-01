@@ -13,3 +13,13 @@ test('Verify login successful', async ({page}) => {
     await expect(page.locator('//h1[text()="Dashboard"]')).toBeVisible();
 
 });
+
+test('Verify form empty', async ({page}) => {
+    await page.goto('http://localhost:3000/admin');
+    let signInBtn = page.getByRole('button', {name: 'SIGN IN'});
+    await expect(signInBtn).toBeVisible();
+    await signInBtn.click();
+    await expect.soft(page.locator("//div[text()='Email is required']")).toBeVisible();
+    await expect.soft(page.locator("//div[text()='Password is required']")).toBeVisible();
+
+});
