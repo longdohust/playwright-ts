@@ -7,6 +7,16 @@ test.beforeEach('Before each test', async({page}) => {
 });
 
 test('Verify user can creat a new product successfully', async ({page}) => {
+    const random = new Date().getTime();
+    const inputData = {
+        productName: `Playwright - ${random}`,
+        sku: `SKU-${random}`,
+        price: '1000',
+        quantity: '10',
+        urlKey: `url-key-${random}`,
+        metaTitle: 'Playwright',
+        metaDescription: 'Testing tool for web automation'
+    };
     let signInBtn = page.getByRole('button', {name: 'SIGN IN'});
     await expect(signInBtn).toBeVisible();
     await inputTextByLabel('Email*', 'long@gmail.com', page);
@@ -21,11 +31,10 @@ test('Verify user can creat a new product successfully', async ({page}) => {
     //Creat new product
     await clickMenuItemByLabel('New Product', page);
     await expect(page.locator('//h1[text()="Create a new product"]')).toBeVisible();
-    await inputTextByLabel('Product Name*', 'Playwright', page);
+    await inputTextByLabel('Product Name*', inputData.productName, page);
     
-    const random = new Date().getTime();
-    await inputTextByLabel('SKU*', `${random}`, page);
-    await inputTextByLabel('Price*', '1000', page);
+    await inputTextByLabel('SKU*', inputData.sku, page);
+    await inputTextByLabel('Price*', inputData.price, page);
     await selectProductCategory('Women', page);
     await selectDropdownByLabel('Tax Class*', 'Taxable Goods', page);
 
@@ -41,12 +50,12 @@ test('Verify user can creat a new product successfully', async ({page}) => {
     await selectRadioOptionByLabel('Manage Stock*', 'Yes', page);
     await selectRadioOptionByLabel('Stock Availability*', 'Out of Stock', page);
    
-    await page.locator("#field-qty").fill('10');
+    await inputTextByLabel('Quantity*', inputData.quantity, page);
     await selectCheckboxByLabel('No shipping required?', 'check', page);
    
-    await inputTextByLabel('URL Key*', `${random}`, page);
-    await inputTextByLabel('Meta Title*', 'Playwright', page);
-    await inputTextByLabel('Meta Description', 'Testing tool for web automation', page);
+    await inputTextByLabel('URL Key*', inputData.urlKey, page);
+    await inputTextByLabel('Meta Title*', inputData.metaTitle, page);
+    await inputTextByLabel('Meta Description', inputData.metaDescription, page);
 
     await selectDropdownByLabel('Attribute group*', 'Default', page);
 
@@ -55,6 +64,20 @@ test('Verify user can creat a new product successfully', async ({page}) => {
 
     await clickButtonByLabel('Save', page);
     await verifyNotification('Product created successfully', page);
+
+    await clickMenuItemByLabel('Products', page);
+    await inputTextById('field-keyword', `${random}`, page);
+    await page.keyboard.press('Enter');
+    await page.getByText(inputData.productName).click();
+    await expect(page.getByText(`Editing ${inputData.productName}`)).toBeVisible();
+    expect(await getInputValueByLabel('Product Name*', page)).toBe(inputData.productName);
+    expect(await getInputValueByLabel('SKU*', page)).toBe(inputData.sku);
+    expect(await getInputValueByLabel('Price*', page)).toBe(inputData.price);
+    expect(await getInputValueByLabel('URL Key*', page)).toBe(inputData.urlKey);
+    expect(await getInputValueByLabel('Quantity*', page)).toBe(inputData.quantity);
+    expect(await getInputValueByLabel('Meta Title*', page)).toBe(inputData.metaTitle);
+    expect((await getTextAreaValueByLabel('Meta Description', page))?.trim()).toBe(inputData.metaDescription);
+
 });
 
 async function inputTextByLabel(label: string, value: string, page: Page) {
@@ -112,4 +135,25 @@ async function selectCheckboxByLabel(label: string, isCheck: 'check' | 'uncheck'
     if((isCheck == 'check' && currentValue == 'false') || (isCheck == 'uncheck' && currentValue == 'true')) {
         await page.locator(xpath).click();
     }
+}
+
+async function inputTextById(id: string, value: string, page: Page){
+    let selector = `#${id}`;
+    let locator = await page.locator(selector);
+    await locator.clear();
+    await locator.fill(value);
+}
+
+async function getInputValueByLabel(label: string, page: Page) {
+    let xpath1= `//label[normalize-space()='${label}']/following::input[1]`;
+    let xpath2= `//label[normalize-space()='${label}']/following::textarea[1]`;
+    let locator = page.locator(`(${xpath1} | ${xpath2})[1]`);
+    return locator.getAttribute('value');
+}
+
+async function getTextAreaValueByLabel(label: string, page: Page) {
+    let xpath1= `//label[normalize-space()='${label}']/following::input[1]`;
+    let xpath2= `//label[normalize-space()='${label}']/following::textarea[1]`;
+    let locator = page.locator(`(${xpath1} | ${xpath2})[1]`);
+    return locator.textContent();
 }
