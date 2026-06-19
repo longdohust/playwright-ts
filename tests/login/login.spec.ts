@@ -13,7 +13,7 @@ test('Verify login successful', async ({page}) => {
     await loginPage.isOnPage();
     await loginPage.adminLogin('long@gmail.com', '1234567890')    //First case: Must use xpath with class
     await expect(page.locator('//h1[contains(concat(" ", @class, " "), " page-heading-title ")]')).toHaveText('Dashboard');
-    //Seconde case: Must use xpath with text
+    //Second case: Must use xpath with text
     await expect(page.locator('//h1[text()="Dashboard"]')).toBeVisible();
 
 });

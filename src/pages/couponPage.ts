@@ -1,10 +1,10 @@
 import { expect, Page } from "@playwright/test";
+import { CommonPage } from "./commonPage";
+import { CommonInterface } from "./commonInterface";
 
-export class CouponPage {
-    page: Page;
-
+export class CouponPage extends CommonPage implements CommonInterface{
     constructor(page: Page) {
-        this.page = page;
+        super(page);
     }
     async selectRadioOptionByLabelCoupon(label: string, option: string){
         let xpath = `//div[normalize-space()='${label}']/following::label[normalize-space()='${option}']/preceding::span[@role='radio'][1]`;

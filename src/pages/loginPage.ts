@@ -1,15 +1,13 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { CommonPage } from "./commonPage";
+import { CommonInterface } from "./commonInterface";
 
-export class LoginPage{
-    page: Page;
+export class LoginPage extends CommonPage implements CommonInterface{
     signInBtn: Locator;
-    commonPage: CommonPage;
 
     constructor(page: Page){
-        this.page = page;
+        super(page);
         this.signInBtn = this.page.getByRole('button', {name: 'SIGN IN'});
-        this.commonPage = new CommonPage(page);
     }
 
     async isOnPage(){
@@ -17,8 +15,8 @@ export class LoginPage{
     }
 
     async adminLogin(username: string, password: string){
-        await this.commonPage.inputDateByLabel('Email*', username);
-        await this.commonPage.inputDateByLabel('Password*',password);
+        await this.inputDateByLabel('Email*', username);
+        await this.inputDateByLabel('Password*',password);
         await this.signInBtn.click();
     }
 }

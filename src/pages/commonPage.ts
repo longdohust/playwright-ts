@@ -1,5 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import path from "path";
+import { CommonInterface } from "./commonInterface";
 
 export class CommonPage {
     page: Page;
@@ -8,6 +9,7 @@ export class CommonPage {
         this.page = page;
     }
 
+    //abstract isOnPage():void;
     async inputTextByLabel(label: string, value: string) {
         let xpath1= `//label[normalize-space()="${label}"]/following::input[1]`;
         let xpath2= `//label[normalize-space()="${label}"]/following::textarea[1]`;
