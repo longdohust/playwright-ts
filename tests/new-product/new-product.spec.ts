@@ -1,9 +1,18 @@
 import { test, expect, Page } from '@playwright/test';
 import path from 'path';
 import process from 'process';
-import { clickButtonByLabel, clickMenuItemByLabel, getInputValueByLabel, getTextAreaValueByLabel, inputTextById, inputTextByLabel, selectCheckboxByLabel, selectDropdownByLabel, selectProductCategory, selectRadioOptionByLabel, uploadImageByLabel, verifyNotification } from '../../src/common/common';
+import { CommonPage } from '../../src/pages/commonPage';
+import { NewProductPage } from '../../src/pages/newProductPage';
+import { LoginPage } from '../../src/pages/loginPage';
+
+let commonPage: CommonPage;
+let newProductPage: NewProductPage;
+let loginPage: LoginPage;
 
 test.beforeEach('Before each test', async({page}) => {
+    commonPage = new CommonPage(page);
+    newProductPage = new NewProductPage(page);
+    loginPage = new LoginPage(page);
     await page.goto('http://localhost:3000/admin');
 });
 
@@ -18,11 +27,8 @@ test('Verify user can creat a new product successfully', async ({page}) => {
         metaTitle: 'Playwright',
         metaDescription: 'Testing tool for web automation'
     };
-    let signInBtn = page.getByRole('button', {name: 'SIGN IN'});
-    await expect(signInBtn).toBeVisible();
-    await inputTextByLabel('Email*', 'long@gmail.com', page);
-    await inputTextByLabel('Password*', '1234567890', page);
-    await clickButtonByLabel('SIGN IN', page);
+    await loginPage.isOnPage();
+    await loginPage.adminLogin('long@gmail.com', '1234567890');
     
     //First case: Must use xpath with class
     await expect(page.locator('//h1[contains(concat(" ", @class, " "), " page-heading-title ")]')).toHaveText('Dashboard');
@@ -30,53 +36,44 @@ test('Verify user can creat a new product successfully', async ({page}) => {
     await expect(page.locator('//h1[text()="Dashboard"]')).toBeVisible();
 
     //Creat new product
-    await clickMenuItemByLabel('New Product', page);
-    await expect(page.locator('//h1[text()="Create a new product"]')).toBeVisible();
-    await inputTextByLabel('Product Name*', inputData.productName, page);
-    
-    await inputTextByLabel('SKU*', inputData.sku, page);
-    await inputTextByLabel('Price*', inputData.price, page);
-    await selectProductCategory('Women', page);
-    await selectDropdownByLabel('Tax Class*', 'Taxable Goods', page);
+    await commonPage.clickMenuItemByLabel('New Product');
+    await newProductPage.isOnpage();
+    await commonPage.inputTextByLabel('Product Name*', inputData.productName);
+    await commonPage.inputTextByLabel('SKU*', inputData.sku);
+    await commonPage.inputTextByLabel('Price*', inputData.price);
+    await newProductPage.selectProductCategory('Women');
+    await commonPage.selectDropdownByLabel('Tax Class*', 'Taxable Goods');
 
     let descriptionTypeXpath = "//*[local-name()='path' and @d='M0 10a2 2 0 0 1 2-2h44a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V10Z']";
     await page.locator(descriptionTypeXpath).click();
     let descriptionContent = `Playwright enables reliable web automation for testing, scripting, and AI agents.`
     await page.locator("//div[@data-placeholder-active='Type / to see the available blocks']").fill(descriptionContent);
-    await uploadImageByLabel('Media','playwright-ts\\resources\\images\\MagazineRack.PNG', page);
-    
-
-    await selectRadioOptionByLabel('Status*', 'Disabled', page);
-    await selectRadioOptionByLabel('Visibility*', 'Not visible individually', page);
-    await selectRadioOptionByLabel('Manage Stock*', 'Yes', page);
-    await selectRadioOptionByLabel('Stock Availability*', 'Out of Stock', page);
-   
-    await inputTextByLabel('Quantity*', inputData.quantity, page);
-    await selectCheckboxByLabel('No shipping required?', 'check', page);
-   
-    await inputTextByLabel('URL Key*', inputData.urlKey, page);
-    await inputTextByLabel('Meta Title*', inputData.metaTitle, page);
-    await inputTextByLabel('Meta Description', inputData.metaDescription, page);
-
-    await selectDropdownByLabel('Attribute group*', 'Default', page);
-
-    await selectDropdownByLabel('Color', 'Black', page);
-    await selectDropdownByLabel('Size', 'XL', page);
-
-    await clickButtonByLabel('Save', page);
-    await verifyNotification('Product created successfully', page);
-
-    await clickMenuItemByLabel('Products', page);
-    await inputTextById('field-keyword', `${random}`, page);
+    await commonPage.uploadImageByLabel('Media','playwright-ts\\resources\\images\\MagazineRack.PNG');
+    await commonPage.selectRadioOptionByLabel('Status*', 'Disabled');
+    await commonPage.selectRadioOptionByLabel('Visibility*', 'Not visible individually');
+    await commonPage.selectRadioOptionByLabel('Manage Stock*', 'Yes');
+    await commonPage.selectRadioOptionByLabel('Stock Availability*', 'Out of Stock');
+    await commonPage.inputTextByLabel('Quantity*', inputData.quantity);
+    await commonPage.selectCheckboxByLabel('No shipping required?', 'check')
+    await commonPage.inputTextByLabel('URL Key*', inputData.urlKey);
+    await commonPage.inputTextByLabel('Meta Title*', inputData.metaTitle);
+    await commonPage.inputTextByLabel('Meta Description', inputData.metaDescription);
+    await commonPage.selectDropdownByLabel('Attribute group*', 'Default');
+    await commonPage.selectDropdownByLabel('Color', 'Black');
+    await commonPage.selectDropdownByLabel('Size', 'XL');
+    await commonPage.clickButtonByLabel('Save');
+    await commonPage.verifyNotification('Product created successfully');
+    await commonPage.clickMenuItemByLabel('Products');
+    await commonPage.inputTextById('field-keyword', `${random}`);
     await page.keyboard.press('Enter');
     await page.getByText(inputData.productName).click();
     await expect(page.getByText(`Editing ${inputData.productName}`)).toBeVisible();
-    expect(await getInputValueByLabel('Product Name*', page)).toBe(inputData.productName);
-    expect(await getInputValueByLabel('SKU*', page)).toBe(inputData.sku);
-    expect(await getInputValueByLabel('Price*', page)).toBe(inputData.price);
-    expect(await getInputValueByLabel('URL Key*', page)).toBe(inputData.urlKey);
-    expect(await getInputValueByLabel('Quantity*', page)).toBe(inputData.quantity);
-    expect(await getInputValueByLabel('Meta Title*', page)).toBe(inputData.metaTitle);
-    expect((await getTextAreaValueByLabel('Meta Description', page))?.trim()).toBe(inputData.metaDescription);
+    expect(await commonPage.getInputValueByLabel('Product Name*')).toBe(inputData.productName);
+    expect(await commonPage.getInputValueByLabel('SKU*')).toBe(inputData.sku);
+    expect(await commonPage.getInputValueByLabel('Price*')).toBe(inputData.price);
+    expect(await commonPage.getInputValueByLabel('URL Key*')).toBe(inputData.urlKey);
+    expect(await commonPage.getInputValueByLabel('Quantity*')).toBe(inputData.quantity);
+    expect(await commonPage.getInputValueByLabel('Meta Title*')).toBe(inputData.metaTitle);
+    expect((await commonPage.getTextAreaValueByLabel('Meta Description'))?.trim()).toBe(inputData.metaDescription);
 
 });
