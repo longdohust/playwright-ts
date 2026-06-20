@@ -1,15 +1,16 @@
 import { expect, Page } from "@playwright/test";
 import { CommonPage } from "./commonPage";
 import { CommonInterface } from "./commonInterface";
+import { verify } from "node:crypto";
 
-export class NewProductPage extends CommonPage implements CommonInterface{
+export class NewProductPage extends CommonPage{
 
     constructor(page: Page){
         super(page);
     }
 
     async isOnPage(){
-        await expect(this.page.locator('//h1[text()="Create a new product"]')).toBeVisible();
+        await this.verifyHeaderByText('Create a new product');
     }
 
     async selectProductCategory(category: string) {

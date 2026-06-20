@@ -2,7 +2,7 @@ import { expect, Locator, Page } from "@playwright/test";
 import { CommonPage } from "./commonPage";
 import { CommonInterface } from "./commonInterface";
 
-export class LoginPage extends CommonPage implements CommonInterface{
+export class LoginPage extends CommonPage{
     signInBtn: Locator;
 
     constructor(page: Page){
