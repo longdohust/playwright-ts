@@ -2,19 +2,14 @@ import { expect, Page } from "@playwright/test";
 import path from "path";
 import { CommonInterface } from "./commonInterface";
 
-export abstract class CommonPage {
+export class CommonPage {
     page: Page;
 
     constructor(page: Page) {
         this.page = page;
     }
 
-    abstract isOnPage():void;
-
-    async verifyHeaderByText(value: string){
-        await expect(this.page.locator(`//h1[contains(concat(" ", @class, " "), " page-heading-title ") and text()='${value}']`)).toBeVisible();
-    }
-    
+    //abstract isOnPage():void;
     async inputTextByLabel(label: string, value: string) {
         let xpath1= `//label[normalize-space()="${label}"]/following::input[1]`;
         let xpath2= `//label[normalize-space()="${label}"]/following::textarea[1]`;
