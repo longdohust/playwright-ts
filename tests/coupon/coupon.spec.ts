@@ -6,6 +6,7 @@ import { CouponPage } from '../../src/pages/couponPage';
 import { LoginPage } from '../../src/pages/loginPage';
 import { DashboardPage } from '../../src/pages/dashboardPage';
 import { adminBaseUrl } from '../../src/utils/constants-ultils';
+import { adminTest } from '../../src/fixtures/admin-fixture';
 
 let couponPage: CouponPage;
 let loginPage: LoginPage;
@@ -16,13 +17,13 @@ test.beforeEach('Before each test', async({page}) => {
     loginPage = new LoginPage(page);
     dashboardPage = new DashboardPage(page);
 
-    await page.goto(adminBaseUrl);
+    //await page.goto(adminBaseUrl);
 });
 
-test('Verify user can create a nre coupon successfully', async ({page}) => {
+adminTest('Verify user can create a nre coupon successfully', async ({page}) => {
     let signInBtn = page.getByRole('button', {name: 'SIGN IN'});
-        await loginPage.isOnPage();
-        await loginPage.defaultAdminLogin();
+        // await loginPage.isOnPage();
+        // await loginPage.defaultAdminLogin();
 
         await dashboardPage.isOnPage();
         await dashboardPage.clickMenuItemByLabel('New Coupon');

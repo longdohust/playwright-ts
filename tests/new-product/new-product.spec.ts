@@ -6,6 +6,7 @@ import { NewProductPage } from '../../src/pages/newProductPage';
 import { LoginPage } from '../../src/pages/loginPage';
 import { DashboardPage } from '../../src/pages/dashboardPage';
 import { adminBaseUrl } from '../../src/utils/constants-ultils';
+import { adminTest } from '../../src/fixtures/admin-fixture';
 
 let dashboardPage: DashboardPage;
 let newProductPage: NewProductPage;
@@ -15,10 +16,10 @@ test.beforeEach('Before each test', async({page}) => {
     dashboardPage = new DashboardPage(page);
     newProductPage = new NewProductPage(page);
     loginPage = new LoginPage(page);
-    await page.goto(adminBaseUrl);
+    //await page.goto(adminBaseUrl);
 });
 
-test('Verify user can creat a new product successfully', async ({page}) => {
+adminTest('Verify user can creat a new product successfully', async ({page}) => {
     const random = new Date().getTime();
     const inputData = {
         productName: `Playwright - ${random}`,
@@ -29,8 +30,8 @@ test('Verify user can creat a new product successfully', async ({page}) => {
         metaTitle: 'Playwright',
         metaDescription: 'Testing tool for web automation'
     };
-    await loginPage.isOnPage();
-    await loginPage.defaultAdminLogin();
+    //await loginPage.isOnPage();
+    //await loginPage.defaultAdminLogin();
     
     await dashboardPage.isOnPage();
     await dashboardPage.clickMenuItemByLabel('New Product');
