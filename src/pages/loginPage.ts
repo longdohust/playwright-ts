@@ -1,6 +1,7 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { CommonPage } from "./commonPage";
 import { CommonInterface } from "./commonInterface";
+import { adminPassword, adminUsername} from "../utils/constants-ultils";
 
 export class LoginPage extends CommonPage implements CommonInterface{
     signInBtn: Locator;
@@ -18,5 +19,9 @@ export class LoginPage extends CommonPage implements CommonInterface{
         await this.inputDateByLabel('Email*', username);
         await this.inputDateByLabel('Password*',password);
         await this.signInBtn.click();
+    }
+
+    async defaultAdminLogin() {
+        await this.adminLogin(adminUsername, adminPassword);
     }
 }

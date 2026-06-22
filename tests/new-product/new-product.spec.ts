@@ -5,6 +5,7 @@ import { CommonPage } from '../../src/pages/commonPage';
 import { NewProductPage } from '../../src/pages/newProductPage';
 import { LoginPage } from '../../src/pages/loginPage';
 import { DashboardPage } from '../../src/pages/dashboardPage';
+import { adminBaseUrl } from '../../src/utils/constants-ultils';
 
 let dashboardPage: DashboardPage;
 let newProductPage: NewProductPage;
@@ -14,7 +15,7 @@ test.beforeEach('Before each test', async({page}) => {
     dashboardPage = new DashboardPage(page);
     newProductPage = new NewProductPage(page);
     loginPage = new LoginPage(page);
-    await page.goto('http://localhost:3000/admin');
+    await page.goto(adminBaseUrl);
 });
 
 test('Verify user can creat a new product successfully', async ({page}) => {
@@ -29,7 +30,7 @@ test('Verify user can creat a new product successfully', async ({page}) => {
         metaDescription: 'Testing tool for web automation'
     };
     await loginPage.isOnPage();
-    await loginPage.adminLogin('long@gmail.com', '1234567890');
+    await loginPage.defaultAdminLogin();
     
     await dashboardPage.isOnPage();
     await dashboardPage.clickMenuItemByLabel('New Product');
