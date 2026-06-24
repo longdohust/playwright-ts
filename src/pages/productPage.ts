@@ -12,7 +12,7 @@ export class Product extends CommonPage implements CommonInterface {
         expect(this.page.getByText('Create a new product')).toBeVisible();
     }
 
-     async deleteProductByAPI(token: string, productId: string){
+    async deleteProductByAPI(token: string, productId: string){
         let req = await request.newContext();
         await req.delete(`${apiBaseUrl}/api/products/${productId}`, {
             headers: {
