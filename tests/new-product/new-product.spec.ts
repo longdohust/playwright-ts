@@ -83,7 +83,6 @@ adminTest('Verify user can creat a new product successfully', async ({page, cont
     await page.getByText(inputData.productName).click();
     await expect(page.getByText(`Editing ${inputData.productName}`)).toBeVisible();
     const productId = await editProductPage.getProductId();
-    productIds.push(productId);
     expect(await editProductPage.getInputValueByLabel('Product Name*')).toBe(inputData.productName);
     expect(await editProductPage.getInputValueByLabel('SKU*')).toBe(inputData.sku);
     expect(await editProductPage.getInputValueByLabel('Price*')).toBe(inputData.price);
@@ -91,9 +90,7 @@ adminTest('Verify user can creat a new product successfully', async ({page, cont
     expect(await editProductPage.getInputValueByLabel('Quantity*')).toBe(inputData.quantity);
     expect(await editProductPage.getInputValueByLabel('Meta Title*')).toBe(inputData.metaTitle);
     expect((await editProductPage.getTextAreaValueByLabel('Meta Description'))?.trim()).toBe(inputData.metaDescription);
-    let cookies = await context.cookies();
-    let asidObj = cookies.find(c => c.name == "asid");
-    let sidObj = cookies.find(c => c.name == "sid");
+    productIds.push(productId);
 
 });
 
@@ -148,7 +145,6 @@ adminTest('Verify user can creat a new product successfully wwith shipping', asy
     await page.getByText(inputData.productName).click();
     await expect(page.getByText(`Editing ${inputData.productName}`)).toBeVisible();
     const productId = await editProductPage.getProductId();
-    productIds.push(productId);
     expect(await editProductPage.getInputValueByLabel('Product Name*')).toBe(inputData.productName);
     expect(await editProductPage.getInputValueByLabel('SKU*')).toBe(inputData.sku);
     expect(await editProductPage.getInputValueByLabel('Price*')).toBe(inputData.price);
@@ -156,6 +152,7 @@ adminTest('Verify user can creat a new product successfully wwith shipping', asy
     expect(await editProductPage.getInputValueByLabel('Quantity*')).toBe(inputData.quantity);
     expect(await editProductPage.getInputValueByLabel('Meta Title*')).toBe(inputData.metaTitle);
     expect((await editProductPage.getTextAreaValueByLabel('Meta Description'))?.trim()).toBe(inputData.metaDescription);
+    productIds.push(productId);
 
 });
 

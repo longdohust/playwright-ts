@@ -1,0 +1,68 @@
+{
+  "name": "Playwright - 1782482642698",
+  "sku": "SKU-1782482642698",
+  "price": 1000,
+  "tax_class": 1,
+  "description": [
+    {
+      "id": "r__1e96391f-cad1-4e7b-813a-d8982d0d83b8",
+      "editSetting": true,
+      "columns": [
+        {
+          "size": 1,
+          "className": "md:col-span-1",
+          "id": "c__19bb5dd4-6917-46dc-98dc-0a563eaa30c9",
+          "data": {
+            "time": 1782482651984,
+            "blocks": [
+              {
+                "id": "8rqB39SzQN",
+                "type": "paragraph",
+                "data": {
+                  "text": "Playwright enables reliable web automation for testing, scripting, and AI agents."
+                }
+              }
+            ],
+            "version": "2.31.1"
+          }
+        }
+      ],
+      "size": 1,
+      "className": "md:grid-cols-1"
+    }
+  ],
+  "url_key": "url-key-1782482642698",
+  "meta_title": "Playwright",
+  "meta_keywords": "",
+  "meta_description": "Testing tool for web automation",
+  "status": 0,
+  "visibility": 0,
+  "manage_stock": 1,
+  "stock_availability": 0,
+  "qty": 10,
+  "no_shipping_required": false,
+  "weight": 16,
+  "group_id": "1",
+  "images": [
+    "/assets/catalog/2438/4426/magazinerack.PNG"
+  ],
+  "attributes": [
+    {
+      "attribute_code": "color",
+      "attribute_name": "Color",
+      "type": "select",
+      "attribute_id": "1",
+      "value": "2",
+      "is_required": 0
+    },
+    {
+      "attribute_code": "size",
+      "attribute_name": "Size",
+      "type": "select",
+      "attribute_id": "2",
+      "value": "5",
+      "is_required": 0
+    }
+  ],
+  "category_id": 2
+}
