@@ -136,6 +136,7 @@ adminTest('Verify message when create product unsuccessfuly', async ({page, requ
     await newProductPage.selectDropdownByLabel('Attribute group*', 'Default');
     await newProductPage.selectDropdownByLabel('Color', 'Black');
     await newProductPage.selectDropdownByLabel('Size', 'XL');
+
     await page.route('**/api/products', async route => {
         await route.fulfill({
             status: 500,
@@ -148,22 +149,10 @@ adminTest('Verify message when create product unsuccessfuly', async ({page, requ
             }
         })
     })
+
     await newProductPage.clickButtonByLabel('Save');
     await newProductPage.verifyNotification('Something went wrong!');
-    // await newProductPage.clickMenuItemByLabel('Products');
-    // await productPage.isOnPage();
-    // await productPage.inputTextById('field-keyword', `${random}`);
-    // await page.keyboard.press('Enter');
-    // await page.getByText(inputData.productName).click();
-    // await expect(page.getByText(`Editing ${inputData.productName}`)).toBeVisible();
     const productId = await editProductPage.getProductId();
-    // expect(await editProductPage.getInputValueByLabel('Product Name*')).toBe(inputData.productName);
-    // expect(await editProductPage.getInputValueByLabel('SKU*')).toBe(inputData.sku);
-    // expect(await editProductPage.getInputValueByLabel('Price*')).toBe(inputData.price);
-    // expect(await editProductPage.getInputValueByLabel('URL Key*')).toBe(inputData.urlKey);
-    // expect(await editProductPage.getInputValueByLabel('Quantity*')).toBe(inputData.quantity);
-    // expect(await editProductPage.getInputValueByLabel('Meta Title*')).toBe(inputData.metaTitle);
-    // expect((await editProductPage.getTextAreaValueByLabel('Meta Description'))?.trim()).toBe(inputData.metaDescription);
     productIds.push(productId);
 
 });

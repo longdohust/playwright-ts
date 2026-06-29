@@ -16,8 +16,8 @@ export class LoginPage extends CommonPage implements CommonInterface{
     }
 
     async adminLogin(username: string, password: string){
-        await this.inputDateByLabel('Email*', username);
-        await this.inputDateByLabel('Password*',password);
+        await this.inputTextByLabel('Email*', username);
+        await this.inputTextByLabel('Password*',password);
         await this.signInBtn.click();
     }
 
