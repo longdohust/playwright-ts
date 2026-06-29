@@ -12,7 +12,7 @@ let couponPage: CouponPage;
 let loginPage: LoginPage;
 let dashboardPage: DashboardPage;
 
-test.beforeEach('Before each test', async({page}) => {
+adminTest.beforeEach('Before each test', async({page}) => {
     couponPage = new CouponPage(page);
     loginPage = new LoginPage(page);
     dashboardPage = new DashboardPage(page);

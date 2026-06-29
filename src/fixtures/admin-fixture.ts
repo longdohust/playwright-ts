@@ -8,6 +8,14 @@ export const adminTest = base.extend({
     let loginPage = new LoginPage(page);
     await loginPage.isOnPage();
     await loginPage.defaultAdminLogin();
+    
     await use(page);
+
+    if(adminTest.info().status != 'passed'){
+        await adminTest.info().attach('screenshot', {
+            body: await page.screenshot({fullPage:true}),
+            contentType: 'image/png'
+        });
+    }
   },
 });
