@@ -1,6 +1,6 @@
 import {test, expect, Page } from '@playwright/test';
 
-test('Verify alert', async ({ page }) => {
+test('Verify iframe', async ({ page }) => {
     await page.goto('https://test-with-me-app.vercel.app/learning/web-elements/frames');
     let frameXpath = "//iframe[@title='Example Frame']";
     const iframe = page.locator(frameXpath).contentFrame();
